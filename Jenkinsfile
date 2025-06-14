@@ -42,6 +42,7 @@ pipeline {
                             cd helm
                             sed -i 's/IMAGE_VERSION/${appVersion}/g' values-${environment}.yaml
                             cat values-${environment}.yaml
+                            helm upgrade --install $COMPONENT -n expense -f values-${environment}.yaml .
                         """
                     }
                 }
