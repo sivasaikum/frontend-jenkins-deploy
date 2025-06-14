@@ -1,0 +1,44 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: frontend
+  namespace: expense
+  labels:
+    app: frontend
+    tier: web
+    project: expense
+spec:
+  replicas: {{ .Values.deployment.replicas }}
+  selector:
+    matchLabels:
+      app: frontend
+      tier: web
+      project: expense
+  template:
+    metadata:
+      labels:
+        app: frontend
+        tier: web
+        project: expense
+    spec:
+      volumes:
+      - name: nginx
+        configMap:
+          name: frontend
+          items:
+            - key: nginx.conf
+              path: nginx.conf
+      containers:
+      - name: nginx
+        image: {{ .Values.deployment.imageURL}}:{{ .Values.deployment.version }}
+        resources:
+          # soft limit
+          requests:
+            memory: "68Mi"
+            cpu: "100m"
+          # hard limit
+          limits:
+            memory: "256Mi"
+            cpu: "250m"
+        ports:
+        - containerPort: 8080

@@ -1,0 +1,8 @@
+configmap:
+  db_host: backend
+deployment:
+  version: IMAGE_VERSION
+  imageURL: 381491879282.dkr.ecr.us-east-1.amazonaws.com/expense/frontend
+  replicas: 1
+hpa:
+  Utilization: 70
